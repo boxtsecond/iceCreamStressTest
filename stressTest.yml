@@ -1,0 +1,77 @@
+config:
+  target: "http://api.xuegaoqun.com/app/api"
+  http:
+    timeout: 4
+  # target: "http://10.40.253.187:3001/api"
+  # target: "http://127.0.0.1:3001/api"
+  phases:
+    - duration: 10
+      arrivalRate: 200
+  processor: "./stressTest.js"
+scenarios:
+  - flow:
+    - post:
+        url: "/Tokens/getToken"
+        beforeRequest: "getTokenInfo"
+        # json: 
+        #   appid: "591d94b5-dfa9-4216-a597-c22464bdd309"
+        #   appsecret: "98fe6629-1e25-408b-9db4-8cca1a8d02d3"
+        afterResponse: "logResBody"
+        capture: 
+          json: "$.result.token"
+          as: "g_token"
+    - post:
+        url: "/Consumers/fastlogin"
+        headers: 
+          token: "{{ g_token }}"
+        beforeRequest: "fastlogin" 
+        afterResponse: "logResBody"
+        capture: 
+          json: "$.result.token.token"
+          as: "u_token"
+    - get:
+        url: "/Headlines/1?start=0&stop=1000"
+        headers:
+          token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjUwNjksImV4cCI6MTUxMDM5MTUxM30.BLug0rLChniboo3zgqiWZdlZcN_BUTcAGdQFXj-fklg"
+        beforeRequest: "getHeadlines"
+        afterResponse: "logResBody"
+    - post:
+        url: "/Tokens/getstarToken"
+        beforeRequest: "getStarTokenInfo"
+        # json: 
+        #   appid: "591d94b5-dfa9-4216-a597-c22464bdd309"
+        #   appsecret: "98fe6629-1e25-408b-9db4-8cca1a8d02d3"
+        afterResponse: "logResBody"
+        capture: 
+          json: "$.result.token"
+          as: "sg_token"
+    - post:
+        url: "/Stars/login"
+        headers: 
+          token: "{{ g_token }}"
+        beforeRequest: "fastlogin" 
+        afterResponse: "logResBody"
+        capture: 
+          json: "$.result.token.token"
+          as: "su_token"
+    - post:
+        url: "/Headlines"
+        headers:
+            token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOi0yLCJleHAiOjE1MTAzOTE5MjB9.-_Ckzk1574zLcYB6-Ij31e5HF5nRNlLPJjT2kDVAK5o"
+        beforeRequest: "publishHeadlines"
+        afterResponse: "logResBody"
+    - post:
+        url: "/FanComments"
+        headers:
+          token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjUwNjksImV4cCI6MTUxMDM5MTUxM30.BLug0rLChniboo3zgqiWZdlZcN_BUTcAGdQFXj-fklg"
+        beforeRequest: "fanComments"
+        afterResponse: "logResBody"
+    - post:
+        url: "/FanComments/reply"
+        headers:
+          # token: "{{ u_token }}"
+          token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjUwNjksImV4cCI6MTUxMDM5MTUxM30.BLug0rLChniboo3zgqiWZdlZcN_BUTcAGdQFXj-fklg"
+        beforeRequest: "fanReply"
+        afterResponse: "logResBody"
+
+

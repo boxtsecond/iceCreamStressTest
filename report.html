@@ -1,0 +1,723 @@
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>国泰君安证券_客户投诉单</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="pragma" content="no-cache"/>
+        <meta http-equiv="cache-control" content="no-cache"/>
+        <meta http-equiv="expires" content="0"/>
+        <meta http-equiv="keywords" content="国泰君安证券，客户投诉"/>
+        <meta http-equiv="description" content="国泰君安证券 客户投诉"/>
+        <link href="https://www.gtja.com/complaint/css/global.css" rel="stylesheet" type="text/css" />
+        <script src="https://www.gtja.com/complaint/js/setTab.js" type="text/javascript"></script>
+        <script src="https://www.gtja.com/brh/js/jquery.min.js" type="text/javascript"></script>
+        <script src="https://www.gtja.com/complaint/js/submitOrder.js" type="text/javascript" language="javascript"></script>
+    </head>
+    <body>
+        <script language="JavaScript">
+
+	var vdomain="1" +document.domain + "2";
+	if (vdomain.indexOf("www.igtja.com")==-1) {
+		//window.location.href="http://www.igtja.com/complaint/complaintOrder.jsp?isOnly_jy=1&isAnonymous=";
+}
+
+</script>
+        <script src="https://www.gtja.com/login/js/ssolib.js" language="javascript"></script>
+        <div id="activeXobject"></div>
+        <form action="/single.do" name="testForm"  method="post">
+            <input type="hidden" name="tokenRequestInfo">
+            <input type="hidden" name="characteristic">
+            <input type="hidden" name="CurrentUser">
+            <input type="hidden" name="userName">
+            <input type="hidden" name="employeeId">
+            <input type="hidden" name="passWord">
+            <input type="hidden" name="checktoken">
+            <input type="hidden" name="getTokenByUser">
+            <input type="hidden" name="currentToken">
+            <input type="hidden" name="isCheck">
+            <input type="hidden" name="temp">
+            <input type="hidden" name="isNeedToken">
+            <input type="hidden" name="systype">
+            <input type="hidden" name="method" value="login">
+            <input type="hidden" name="tokenFreeInfo">
+            <input type="hidden" name="longTypeJump" value="/index/login.jsp">
+            <input type="hidden" name="userLevel"/>
+            <input type="hidden" name="isSingle"/>
+            <input type="hidden" name="userCode">
+            <input type="hidden" name="loginType" id="loginType" value="">
+            <input type="hidden" name="stockCode" id="stockCode" value="">
+	
+
+        </form>
+        <form action="https://www.gtja.com/login/logout.jsp" id="successForm" name="successForm" method="post">
+            <input type="hidden" name="passWord">
+            <input type="hidden" name="userName">
+            <input type="hidden" name="logincount">
+            <!-- begin add by wei -->
+            <input type="hidden" name="tokenFreeInfo">
+            <input type="hidden" name="getTradeId">
+            <!-- end add by wei -->
+
+        </form>
+        <script language="javascript">
+var e=DetectActiveX();
+var ssolib=document.getElementById('ssolib');
+
+	var urlStr="https://www.gtja.com/index/login.jsp?isSingle=0&isOnly_jy=0";//网站:交易登录、昵称登录、体验用户登录 isOnly_jy 0:否 1：是
+
+
+var isJunHongLogin = 0;
+var isFlagShopLogin = 0;
+var isEt = 0;
+var isFree=0;
+
+console.log(submitOrder)
+
+
+
+
+function getToken(flag,userLevel,employeeId,currentToken){ 
+	//flag:0无控件,1有控件,2无组件登录
+	if(flag=='1'){
+		document.testForm.isSingle.value='1';	
+		// 检查本地缓存
+		var cache = ssolib.CheckCache();
+		if((cache == '0' || cache == '1'  || cache == '3') && false){
+			return;
+		}
+	    if(cache == '0' || cache == '3'){
+	  	// 取得本地缓存
+	  		document.testForm.action= '/index/login.jsp?isOnly_jy=1';
+			// 取得本地缓存
+			document.testForm.characteristic.value=ssolib.GetCharacteristic();
+			// 本地缓存
+			document.testForm.checktoken.value=cache;
+			document.testForm.temp.value='1';
+			// 系统类型
+			document.testForm.systype.value=ssolib.GetCurrentUserCD();
+			// document.testForm.submit();
+		} 
+		// 正在申请令牌但令牌还未返回的情况
+		else if(cache == '1') {
+			document.testForm.action='/index/login.jsp?isOnly_jy=1';
+			// 本地令牌认证信息
+			document.testForm.tokenRequestInfo.value=ssolib.GetTokenRequestInfo('15');
+			// 取得本地缓存
+			document.testForm.characteristic.value=ssolib.GetCharacteristic();
+			// 取得当前用户
+			document.testForm.CurrentUser.value=ssolib.GetCurrentUser();
+			// 检查本地令牌
+			document.testForm.checktoken.value=cache; //checktoken
+			document.testForm.isCheck.value='ischeck';
+			// 检查系统类型
+			document.testForm.systype.value=ssolib.GetCurrentUserCD();//userCode
+			// document.testForm.submit();
+		} 
+		// 本地已有令牌的情况
+		else {
+			if(ssolib.Getlevel(ssolib.GetCurrentUser(),ssolib.GetCurrentUserCD())=='1004'||ssolib.Getlevel(ssolib.GetCurrentUser(),ssolib.GetCurrentUserCD())=='1005'){//员工,经纪人登录
+				document.testForm.action='/single.do';
+				document.testForm.method.value='userLogin';
+				document.testForm.employeeId.value=ssolib.GetCurrentUser();
+			}else if(ssolib.Getlevel(ssolib.GetCurrentUser(),ssolib.GetCurrentUserCD())=='1003'){//体验登录
+				document.testForm.action='/single.do';
+				document.testForm.method.value='userLogin';
+				document.testForm.employeeId.value=ssolib.GetNickName(ssolib.GetCurrentUser(),ssolib.GetCurrentUserCD());
+			}else if(ssolib.Getlevel(ssolib.GetCurrentUser(),ssolib.GetCurrentUserCD())=='1011'){//yht登录
+				window.location='/index/login.jsp?isSingle=0';
+				return;
+			}else{
+				document.testForm.action='/single.do';
+				document.testForm.method.value='userLogin';
+				document.testForm.employeeId.value=ssolib.GetTradeId(ssolib.GetCurrentUser(),ssolib.GetCurrentUserCD());
+			}
+			// 本地令牌认证信息
+			document.testForm.isNeedToken.value='1';
+			document.testForm.userLevel.value=ssolib.Getlevel(ssolib.GetCurrentUser(),ssolib.GetCurrentUserCD());
+			document.testForm.characteristic.value=ssolib.GetCharacteristic();
+			document.testForm.currentToken.value = ssolib.GetCurrentToken("15");
+			document.testForm.systype.value=ssolib.GetCurrentUserCD();
+			document.testForm.userCode.value=ssolib.GetCurrentUserCD();
+			// document.testForm.submit();
+		}
+	}else if(flag=='2'){//无组件登录
+		if(userLevel==''||employeeId==''){
+			window.top.location.href = '/login/error/clienterror.html';
+		}else{
+			document.testForm.isNeedToken.value='1';
+			document.testForm.isSingle.value='1';
+			document.testForm.action='/single.do';
+			document.testForm.method.value='userLogin';
+			document.testForm.userLevel.value=userLevel;
+			document.testForm.employeeId.value=employeeId;
+			document.testForm.currentToken.value=currentToken;
+			// document.testForm.submit();
+		}
+	}else{
+		document.testForm.isSingle.value='0';
+		if(userLevel=='1004'||userLevel=='1005'){//员工，经纪人登录
+			document.testForm.action='/single.do';
+			document.testForm.method.value='userLogin';
+		}else if(userLevel=='1003'){//体验用户登录
+			document.testForm.action='/single.do';
+			document.testForm.method.value='userLogin';
+		}else{
+			document.testForm.action='/single.do';
+			document.testForm.method.value='userLogin';
+		}
+		document.testForm.isNeedToken.value='1';
+		document.testForm.userLevel.value=userLevel;
+		document.testForm.employeeId.value=employeeId;
+		document.testForm.currentToken.value = currentToken;
+		// document.testForm.submit();
+	}
+}
+</script>
+        <script language="javascript">
+
+//		window.location.href = '/lcfwdt/client/zbh/tyuserover.jsp';
+
+</script>
+        <script type="text/javascript">
+			if(''=='1'){
+				if(e){ 
+				  	getToken('1','','','');
+				}else {
+					if(!(false)){
+						
+							// window.location.href = urlStr
+						
+					}
+				}
+			}else{
+				if(e){
+				  	getToken('1','','','');
+				}else {
+					if(!(false)){
+						
+							// window.location.href = urlStr
+						
+					}
+				}
+			}
+		</script>
+        <div class="w635">
+            <div class="header">
+                <span class="logo">
+                    <a href="#" title="国泰君安证券"></a>
+                </span>
+            </div>
+            <div class="tcbox">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tcform">
+                    <tr>
+                        <th>投诉人姓名：</th>
+                        <td>
+                            <span class="f14"></span>
+                            <input id="realName" type="hidden" value=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>所属营业部：</th>
+                        <td>
+                            <span class="f14">null</span>
+                            <input id="branch" type="hidden" value="null"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>资金账号：</th>
+                        <td>
+                            <span class="f14"></span>
+                            <input id="account" type="hidden" value=""/>
+                        </td>
+                    </tr>
+                    <tr class="nbg">
+                        <th>联系方式：</th>
+                        <td>电话：
+                            <input id="tel" name="tel" type="text" class="text" maxlength="20"/>
+                        </td>
+                    </tr>
+                    <tr class="nbg">
+                        <th>&nbsp;</th>
+                        <td>邮箱：
+                            <input id="email" name="email" type="text" class="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <td>　　　(电话为必填项)</td>
+                    </tr>
+                    <tr class="nbg">
+                        <th>投诉对象：</th>
+                        <td class="textbottom">
+                            <input name="xx" type="radio" value="company" id="taga1" onclick="SwitchNews('a', 1, 2,'cur','');"/>&nbsp;分公司&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input name="xx" class="cur" checked="checked" type="radio" value="branch"  id="taga2" onclick="SwitchNews('a', 2, 2,'cur','');"/>&nbsp;营业部&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                    </tr>
+                    <tr class="nbg">
+                        <th>&nbsp;</th>
+                        <td>
+                            <div id="a1" style="display:none">分公司：
+				
+                                <select id="comBranch" name="comBranch" style="width:200px;">
+                                    <option value="0000">请选择分公司或直属营业部</option>
+                                    <option value="3400">安徽分公司</option>
+                                    <option value="1100">北京分公司</option>
+                                    <option value="5100">四川分公司</option>
+                                    <option value="5188">重庆分公司</option>
+                                    <option value="3500">福建分公司</option>
+                                    <option value="6200">甘肃分公司</option>
+                                    <option value="4500">广西分公司</option>
+                                    <option value="4400">广东分公司</option>
+                                    <option value="5200">贵州分公司</option>
+                                    <option value="1300">河北分公司</option>
+                                    <option value="4200">湖北分公司</option>
+                                    <option value="2300">黑龙江分公司</option>
+                                    <option value="4300">湖南分公司</option>
+                                    <option value="4100">河南分公司</option>
+                                    <option value="4600">海南分公司</option>
+                                    <option value="2200">吉林分公司</option>
+                                    <option value="3200">江苏分公司</option>
+                                    <option value="3600">江西分公司</option>
+                                    <option value="2100">辽宁分公司</option>
+                                    <option value="1500">内蒙古分公司</option>
+                                    <option value="6400">宁夏分公司</option>
+                                    <option value="6300">青海分公司</option>
+                                    <option value="3700">山东分公司</option>
+                                    <option value="3100">上海分公司</option>
+                                    <option value="6100">陕西分公司</option>
+                                    <option value="1400">山西分公司</option>
+                                    <option value="4000">深圳分公司</option>
+                                    <option value="1200">天津分公司</option>
+                                    <option value="6500">新疆分公司</option>
+                                    <option value="5300">云南分公司</option>
+                                    <option value="7000">总部分公司</option>
+                                    <option value="3300">浙江分公司</option>
+                                </select>
+                            </div>
+                            <div id="a2">开户地区：
+	    		
+                                <select name="selectArea" style="width:80px;" onchange="changeBranchList(this.value);">
+                                    <option value="0000">全部</option>
+                                    <option value="1100" >北京</option>
+                                    <option value="1200" >天津</option>
+                                    <option value="1300" >河北</option>
+                                    <option value="1400" >山西</option>
+                                    <option value="1500" >内蒙古</option>
+                                    <option value="2100" >辽宁</option>
+                                    <option value="2200" >吉林</option>
+                                    <option value="2300" >黑龙江</option>
+                                    <option value="3100" >上海</option>
+                                    <option value="3200" >江苏</option>
+                                    <option value="3300" >浙江</option>
+                                    <option value="3400" >安徽</option>
+                                    <option value="3500" >福建</option>
+                                    <option value="3600" >江西</option>
+                                    <option value="3700" >山东</option>
+                                    <option value="4000" >深圳</option>
+                                    <option value="4100" >河南</option>
+                                    <option value="4200" >湖北</option>
+                                    <option value="4300" >湖南</option>
+                                    <option value="4400" >广东</option>
+                                    <option value="4500" >广西</option>
+                                    <option value="4600" >海南</option>
+                                    <option value="5100" >四川</option>
+                                    <option value="5188" >重庆</option>
+                                    <option value="5200" >贵州</option>
+                                    <option value="5300" >云南</option>
+                                    <option value="6100" >陕西</option>
+                                    <option value="6200" >甘肃</option>
+                                    <option value="6300" >青海</option>
+                                    <option value="6400" >宁夏</option>
+                                    <option value="6500" >新疆</option>
+                                    <option value="7000" >总部分公司</option>
+                                </select>&nbsp;&nbsp;&nbsp;&nbsp;营业部：
+                                <select id="selectAreaBranch" name="selectAreaBranch" style="width:200px;">
+                                    <option value="0000">请选择营业部</option>
+                                    <option value="3401" >安徽合肥证券营业部</option>
+                                    <option value="3402" >安庆纺织南路证券营业部</option>
+                                    <option value="8338" >安顺南华路证券营业部</option>
+                                    <option value="8356" >安阳永明路证券营业部</option>
+                                    <option value="8008" >鞍山新华街证券营业部</option>
+                                    <option value="8381" >巴彦淖尔金川大道营业部</option>
+                                    <option value="8066" >包头市府西路证券营业部</option>
+                                    <option value="8337" >保定瑞兴路证券营业部</option>
+                                    <option value="8525" >北京安贞门证券营业部</option>
+                                    <option value="8321" >北京朝内大街证券营业部</option>
+                                    <option value="1102" >北京德外大街证券营业部</option>
+                                    <option value="1101" >北京方庄路证券营业部</option>
+                                    <option value="8052" >北京怀柔府前街证券营业部</option>
+                                    <option value="8320" >北京建国路证券营业部</option>
+                                    <option value="1105" >北京金融街证券营业部</option>
+                                    <option value="8322" >北京金桐西路证券营业部（世贸天阶南侧）</option>
+                                    <option value="1106" >北京鲁谷路营业部</option>
+                                    <option value="8524" >北京苏州桥证券营业部</option>
+                                    <option value="8045" >北京通州新华西街证券营业部</option>
+                                    <option value="8540" >北京望京阜通东大街证券营业部</option>
+                                    <option value="1107" >北京亦庄宏达北路证券营业部</option>
+                                    <option value="1104" >北京知春路证券营业部</option>
+                                    <option value="8327" >北京中关村大街证券营业部</option>
+                                    <option value="8037" >沧州沧县交通北大道证券营业部</option>
+                                    <option value="8378" >昌吉市乌伊西路证券营业部</option>
+                                    <option value="8352" >长春临河街证券营业部</option>
+                                    <option value="2201" >长春人民大街证券营业部</option>
+                                    <option value="2202" >长春卫星路证券营业部</option>
+                                    <option value="8030" >长乐朝阳中路证券营业部</option>
+                                    <option value="8018" >长沙芙蓉中路证券营业部</option>
+                                    <option value="4301" >长沙五一大道证券营业部</option>
+                                    <option value="8508" >长沙岳麓大道证券营业部</option>
+                                    <option value="8033" >常德人民路证券营业部</option>
+                                    <option value="4302" >常德武陵大道证券营业部</option>
+                                    <option value="8519" >常熟黄河路证券营业部</option>
+                                    <option value="3203" >常州延陵中路证券营业部</option>
+                                    <option value="8384" >朝阳新华路证券营业部</option>
+                                    <option value="8377" >潮州绿榕路证券营业部</option>
+                                    <option value="8087" >郴州国庆北路证券营业部 </option>
+                                    <option value="5101" >成都北一环路证券营业部</option>
+                                    <option value="8389" >成都建设路第二证券营业部</option>
+                                    <option value="8048" >成都金堂县十里大道证券营业部</option>
+                                    <option value="5102" >成都双庆路证券营业部</option>
+                                    <option value="5103" >成都顺城大街证券营业部</option>
+                                    <option value="8390" >成都天府二街证券营业部</option>
+                                    <option value="8318" >承德西大街证券营业部</option>
+                                    <option value="8065" >赤峰西拉沐沦大街证券营业部</option>
+                                    <option value="5166" >重庆分公司本部</option>
+                                    <option value="8047" >重庆奉节证券营业部</option>
+                                    <option value="8523" >重庆观音桥步行街证券营业部</option>
+                                    <option value="8391" >重庆金渝大道证券营业部</option>
+                                    <option value="5107" >重庆九尺坎证券营业部</option>
+                                    <option value="5108" >重庆民生路证券营业部</option>
+                                    <option value="8319" >重庆南坪惠工路证券营业部 </option>
+                                    <option value="8046" >重庆万州新城路证券营业部</option>
+                                    <option value="8061" >重庆巫山证券营业部</option>
+                                    <option value="8049" >重庆新南路证券营业部</option>
+                                    <option value="5110" >重庆中山三路证券营业部</option>
+                                    <option value="8060" >重庆忠县证券营业部</option>
+                                    <option value="3314" >慈溪开发大道证券营业部</option>
+                                    <option value="2105" >大连成义街证券营业部</option>
+                                    <option value="8382" >大连金马路证券营业部</option>
+                                    <option value="8330" >大庆火炬新街证券营业部</option>
+                                    <option value="8394" >大同红旗街证券营业部</option>
+                                    <option value="3311" >德清武源街证券营业部</option>
+                                    <option value="8339" >东营黄河路证券营业部</option>
+                                    <option value="8067" >鄂尔多斯伊化北路证券营业部</option>
+                                    <option value="8535" >佛山南海大道证券营业部</option>
+                                    <option value="8028" >福建三明列东街营业部</option>
+                                    <option value="8363" >福清侨荣城证券营业部</option>
+                                    <option value="3501" >福州华林路证券营业部</option>
+                                    <option value="8027" >福州杨桥东路证券营业部</option>
+                                    <option value="3608" >抚州赣东大道证券营业部</option>
+                                    <option value="8019" >抚州南丰橘都大道证券营业部</option>
+                                    <option value="8520" >阜阳淮河路证券营业部</option>
+                                    <option value="8341" >富宁文体路证券营业部</option>
+                                    <option value="8074" >甘肃敦煌阳关中路证券营业部</option>
+                                    <option value="6288" >甘肃分公司本部</option>
+                                    <option value="8072" >甘肃嘉峪关新华中路证券营业部</option>
+                                    <option value="8068" >甘肃张掖县府南街证券营业部</option>
+                                    <option value="3609" >赣州章江南大道证券营业部</option>
+                                    <option value="8044" >个旧金湖西路证券营业部</option>
+                                    <option value="4419" >广东东莞体育路证券营业部</option>
+                                    <option value="4423" >广东梅州新中路证券营业部</option>
+                                    <option value="4418" >广东顺德大良证券营业部</option>
+                                    <option value="4588" >广西分公司本部</option>
+                                    <option value="4502" >广西桂林市空明西路证券营业部 </option>
+                                    <option value="4401" >广州东风中路证券营业部</option>
+                                    <option value="8534" >广州汉兴中路证券营业部</option>
+                                    <option value="4402" >广州黄埔大道证券营业部</option>
+                                    <option value="4403" >广州人民中路证券营业部</option>
+                                    <option value="8538" >广州山香路证券营业部</option>
+                                    <option value="4422" >广州新港东路证券营业部</option>
+                                    <option value="8015" >贵溪建设路证券营业部</option>
+                                    <option value="8016" >贵溪冶金大道证券营业部</option>
+                                    <option value="5201" >贵阳中华中路证券营业部</option>
+                                    <option value="8076" >贵州遵义昆明路证券营业部</option>
+                                    <option value="8080" >哈尔滨哈尔滨大街证券营业部</option>
+                                    <option value="8059" >哈尔滨尚志大街证券营业部</option>
+                                    <option value="8055" >哈尔滨尚志中央大街证券营业部</option>
+                                    <option value="2302" >哈尔滨西大直街证券营业部</option>
+                                    <option value="4602" >海口国贸大道证券营业部</option>
+                                    <option value="8050" >海口龙昆南路证券营业部</option>
+                                    <option value="8006" >海南儋州中兴大道证券营业部</option>
+                                    <option value="8036" >邯郸人民东路证券营业部</option>
+                                    <option value="8541" >杭州滨江科技馆街营业部</option>
+                                    <option value="3301" >杭州庆春路证券营业部</option>
+                                    <option value="8328" >杭州天目山路证券营业部</option>
+                                    <option value="8359" >杭州五星路证券营业部</option>
+                                    <option value="3310" >杭州萧山市心中路证券营业部</option>
+                                    <option value="8342" >河池金城中路证券营业部</option>
+                                    <option value="8536" >河源越王大道证券营业部</option>
+                                    <option value="8528" >衡水人民西路证券营业部</option>
+                                    <option value="8020" >衡阳解放大道证券营业部</option>
+                                    <option value="1501" >呼和浩特乌兰察布西街证券营业部</option>
+                                    <option value="4208" >湖北荆州便河东路证券营业部</option>
+                                    <option value="8013" >湖北宜昌四新路证券营业部</option>
+                                    <option value="4211" >湖北宜昌珍珠路证券营业部</option>
+                                    <option value="4303" >湖南衡阳雁城路证券营业部</option>
+                                    <option value="3313" >湖州滨河路证券营业部</option>
+                                    <option value="8003" >桦甸桦甸大街证券营业部</option>
+                                    <option value="8376" >怀化人民路证券营业部</option>
+                                    <option value="8347" >淮安健康东路证券营业部</option>
+                                    <option value="8308" >淮南朝阳东路营业部</option>
+                                    <option value="8504" >黄石武汉路证券营业部</option>
+                                    <option value="8537" >惠州文昌一路证券营业部</option>
+                                    <option value="8399" >吉安井冈山大道证券营业部</option>
+                                    <option value="2288" >吉林分公司本部</option>
+                                    <option value="2203" >吉林松江路证券营业部</option>
+                                    <option value="8310" >吉林延安街证券营业部</option>
+                                    <option value="8388" >吉首人民中路证券营业部</option>
+                                    <option value="3701" >济南解放路证券营业部</option>
+                                    <option value="3702" >济南胜利大街证券营业部</option>
+                                    <option value="3706" >济宁吴泰闸路证券营业部</option>
+                                    <option value="8063" >济源济水大街证券营业部</option>
+                                    <option value="8371" >江门鹤山东升路证券营业部</option>
+                                    <option value="3688" >江西分公司本部</option>
+                                    <option value="8022" >江西九江南海路证券营业部</option>
+                                    <option value="8032" >江西南昌进贤军湖路营业部</option>
+                                    <option value="8031" >江西南昌象山北路证券营业部</option>
+                                    <option value="3601" >江西南昌站前路证券营业部</option>
+                                    <option value="8522" >江阴环城北路证券营业部</option>
+                                    <option value="8358" >焦作塔南路证券营业部</option>
+                                    <option value="8374" >揭阳黄岐山大道证券营业部</option>
+                                    <option value="3308" >金华八一南街证券营业部</option>
+                                    <option value="8039" >晋城红星西街证券营业部</option>
+                                    <option value="8316" >晋江长兴路营业部</option>
+                                    <option value="8527" >晋中新建北路证券营业部</option>
+                                    <option value="8395" >景德镇瓷都大道营业部</option>
+                                    <option value="3602" >九江甘棠路证券营业部</option>
+                                    <option value="8023" >九江十里大道证券营业部</option>
+                                    <option value="8073" >酒泉市南大街证券营业部</option>
+                                    <option value="8369" >凯里北京西路证券营业部</option>
+                                    <option value="8533" >昆山前进中路证券营业部</option>
+                                    <option value="8081" >兰州东岗西路证券营业部</option>
+                                    <option value="8071" >兰州福利西路证券营业部</option>
+                                    <option value="6201" >兰州酒泉路证券营业部</option>
+                                    <option value="8361" >廊坊广阳道证券营业部</option>
+                                    <option value="8041" >丽江福慧路证券营业部</option>
+                                    <option value="8351" >连云港巨龙南路证券营业部</option>
+                                    <option value="8502" >聊城东昌西路证券营业部</option>
+                                    <option value="8340" >临汾向阳西路证券营业部</option>
+                                    <option value="8012" >临沂双月湖路证券营业部</option>
+                                    <option value="3704" >临沂沂蒙路证券营业部</option>
+                                    <option value="8343" >柳州桂中大道证券营业部</option>
+                                    <option value="8029" >龙岩华莲路证券营业部</option>
+                                    <option value="8396" >娄底氐星路证券营业部</option>
+                                    <option value="8038" >泸州纳溪区云溪东路证券营业部</option>
+                                    <option value="5105" >泸州星光路证券营业部</option>
+                                    <option value="8317" >罗源东环路证券营业部</option>
+                                    <option value="4103" >洛阳中州中路证券营业部</option>
+                                    <option value="8042" >芒市阔时路证券营业部</option>
+                                    <option value="8373" >茂名油城八路证券营业部</option>
+                                    <option value="8513" >绵阳剑南路证券营业部</option>
+                                    <option value="8311" >闽清天行大街证券营业部</option>
+                                    <option value="8364" >南安成功街证券营业部</option>
+                                    <option value="8360" >南昌红谷中大道证券营业部</option>
+                                    <option value="8058" >南京溧水中大街证券营业部</option>
+                                    <option value="8529" >南京庐山路证券营业部</option>
+                                    <option value="3202" >南京太平南路证券营业部</option>
+                                    <option value="8336" >南京天元东路证券营业部</option>
+                                    <option value="8056" >南京中央路证券营业部</option>
+                                    <option value="4501" >南宁民族大道证券营业部</option>
+                                    <option value="8366" >南宁双拥路证券营业部</option>
+                                    <option value="8331" >南通工农路证券营业部</option>
+                                    <option value="8344" >南阳建设东路证券营业部 </option>
+                                    <option value="1588" >内蒙古分公司本部</option>
+                                    <option value="3302" >宁波彩虹北路证券营业部</option>
+                                    <option value="8324" >宁波君子街证券营业部</option>
+                                    <option value="8053" >宁波民安东路证券营业部</option>
+                                    <option value="8526" >宁德侨兴路证券营业部</option>
+                                    <option value="8312" >盘锦兴隆台街证券营业部</option>
+                                    <option value="8070" >邳州珠江路证券营业部</option>
+                                    <option value="8313" >平顶山长安大道证券营业部</option>
+                                    <option value="8025" >萍乡跃进南路营业部</option>
+                                    <option value="2303" >齐齐哈尔中环广场证券营业部</option>
+                                    <option value="8368" >秦皇岛河北大街证券营业部</option>
+                                    <option value="3703" >青岛南京路证券营业部</option>
+                                    <option value="8503" >青岛松岭路证券营业部</option>
+                                    <option value="8539" >清远静福路证券营业部</option>
+                                    <option value="8507" >庆阳安定东路证券营业部</option>
+                                    <option value="8005" >琼海金海路证券营业部</option>
+                                    <option value="8349" >曲靖翠峰东路证券营业部</option>
+                                    <option value="8329" >衢州荷花中路营业部</option>
+                                    <option value="3504" >泉州云鹿路证券营业部</option>
+                                    <option value="8357" >三门峡六峰路证券营业部</option>
+                                    <option value="8393" >三亚迎宾路证券营业部</option>
+                                    <option value="1488" >山西分公司本部</option>
+                                    <option value="1402" >山西离石滨河北东路证券营业部</option>
+                                    <option value="4417" >汕头金砂路证券营业部</option>
+                                    <option value="3102" >上海打浦路证券营业部</option>
+                                    <option value="3105" >上海大渡河路证券营业部</option>
+                                    <option value="3133" >上海分公司本部</option>
+                                    <option value="3109" >上海福山路证券营业部</option>
+                                    <option value="3116" >上海虹口区大连路证券营业部</option>
+                                    <option value="3103" >上海虹桥路证券营业部</option>
+                                    <option value="3121" >上海嘉定塔城路证券营业部</option>
+                                    <option value="3104" >上海江苏路证券营业部</option>
+                                    <option value="3115" >上海静安区南京西路证券营业部</option>
+                                    <option value="3101" >上海九江路证券营业部</option>
+                                    <option value="3106" >上海陆家嘴东路证券营业部</option>
+                                    <option value="3107" >上海牡丹江路证券营业部</option>
+                                    <option value="8306" >上海浦东新区锦康路证券营业部</option>
+                                    <option value="3110" >上海商城路证券营业部</option>
+                                    <option value="3111" >上海四平路证券营业部</option>
+                                    <option value="3120" >上海松江中山东路证券营业部</option>
+                                    <option value="3114" >上海天山路证券营业部</option>
+                                    <option value="3108" >上海团结路营业部</option>
+                                    <option value="3119" >上海威海路证券营业部</option>
+                                    <option value="3113" >上海宜山路证券营业部</option>
+                                    <option value="3155" >上海自贸试验区分公司</option>
+                                    <option value="8353" >上饶赣东北大道证券营业部</option>
+                                    <option value="8084" >邵阳宝庆西路证券营业部</option>
+                                    <option value="8511" >深圳宝安壹方中心证券营业部</option>
+                                    <option value="4406" >深圳滨海大道创投大厦证券营业部</option>
+                                    <option value="4466" >深圳分公司本部</option>
+                                    <option value="4408" >深圳福华三路证券营业部</option>
+                                    <option value="8531" >深圳福民路证券营业部</option>
+                                    <option value="8303" >深圳高新南四道证券营业部</option>
+                                    <option value="4413" >深圳海岸城海德三道营业部</option>
+                                    <option value="4410" >深圳红荔西路证券营业部</option>
+                                    <option value="4409" >深圳华发路证券营业部</option>
+                                    <option value="4415" >深圳华强北路证券营业部</option>
+                                    <option value="8515" >深圳龙岗大道证券营业部</option>
+                                    <option value="4420" >深圳龙华壹成中心证券营业部</option>
+                                    <option value="8510" >深圳梅林路证券营业部</option>
+                                    <option value="8354" >深圳前海证券营业部</option>
+                                    <option value="4411" >深圳人民南路证券营业部</option>
+                                    <option value="4412" >深圳上步中路证券营业部</option>
+                                    <option value="8532" >深圳深南大道华润城营业部  </option>
+                                    <option value="4404" >深圳深南大道京基一百证券营业部</option>
+                                    <option value="4414" >深圳松岗证券营业部</option>
+                                    <option value="4405" >深圳香蜜湖路证券营业部</option>
+                                    <option value="4416" >深圳益田路证券营业部</option>
+                                    <option value="8506" >沈阳北二东路证券营业部</option>
+                                    <option value="2101" >沈阳黄河南大街证券营业部</option>
+                                    <option value="2102" >沈阳十一纬路证券营业部</option>
+                                    <option value="8385" >十堰北京北路证券营业部</option>
+                                    <option value="1302" >石家庄建华南大街证券营业部</option>
+                                    <option value="2204" >四平中央西路证券营业部</option>
+                                    <option value="8530" >苏州狮山路证券营业部</option>
+                                    <option value="8334" >苏州苏雅路证券营业部</option>
+                                    <option value="8386" >太原并州北路证券营业部</option>
+                                    <option value="1401" >太原建设南路证券营业部</option>
+                                    <option value="8346" >泰州鼓楼南路证券营业部</option>
+                                    <option value="8088" >唐山建华西道营业部</option>
+                                    <option value="8077" >天津滨海新区福州道证券营业部</option>
+                                    <option value="8367" >天津滨海新区黄海路证券营业部</option>
+                                    <option value="1288" >天津分公司本部</option>
+                                    <option value="8090" >天津梅苑路证券营业部</option>
+                                    <option value="1205" >天津青年路证券营业部</option>
+                                    <option value="8079" >天津新开路证券营业部</option>
+                                    <option value="8078" >天津友谊路证券营业部</option>
+                                    <option value="8085" >天水建设路证券营业部</option>
+                                    <option value="8002" >天台环城东路证券营业部</option>
+                                    <option value="8305" >通化光明路证券营业部</option>
+                                    <option value="3705" >潍坊东风东街证券营业部</option>
+                                    <option value="8314" >渭南仓程路证券营业部</option>
+                                    <option value="3315" >温岭万昌中路证券营业部</option>
+                                    <option value="3307" >温州江滨西路证券营业部</option>
+                                    <option value="8040" >文山普阳路证券营业部</option>
+                                    <option value="8387" >乌鲁木齐河北东路证券营业部</option>
+                                    <option value="6501" >乌鲁木齐新华北路证券营业部</option>
+                                    <option value="8057" >无锡湖滨路证券营业部</option>
+                                    <option value="8521" >无锡人民中路证券营业部</option>
+                                    <option value="8307" >芜湖文化路营业部</option>
+                                    <option value="4201" >武汉洞庭街证券营业部</option>
+                                    <option value="4202" >武汉京汉大道证券营业部</option>
+                                    <option value="8325" >武汉珞瑜路营业部</option>
+                                    <option value="8392" >武汉马鹦路证券营业部</option>
+                                    <option value="8514" >武汉徐东大街证券营业部</option>
+                                    <option value="4204" >武汉紫阳东路证券营业部</option>
+                                    <option value="8035" >西安东关正街证券营业部</option>
+                                    <option value="6102" >西安高新路证券营业部</option>
+                                    <option value="8365" >西安文景路证券营业部</option>
+                                    <option value="8517" >西安雁展路证券营业部</option>
+                                    <option value="8518" >西昌航天大道证券营业部</option>
+                                    <option value="6301" >西宁胜利路证券营业部</option>
+                                    <option value="8509" >厦门国际金融中心证券营业部</option>
+                                    <option value="3503" >厦门鹭江道证券营业部</option>
+                                    <option value="8001" >仙居酒坊巷证券营业部</option>
+                                    <option value="8302" >咸宁咸宁大道证券营业部</option>
+                                    <option value="8315" >咸阳世纪大道营业部</option>
+                                    <option value="8091" >湘潭建设南路证券营业部</option>
+                                    <option value="8043" >襄阳东风汽车大道证券营业部</option>
+                                    <option value="4209" >襄阳襄城西街证券营业部</option>
+                                    <option value="8505" >孝感北京路证券营业部</option>
+                                    <option value="8398" >新余中山路证券营业部</option>
+                                    <option value="8345" >兴义瑞金大道证券营业部</option>
+                                    <option value="3204" >徐州和平路证券营业部</option>
+                                    <option value="8355" >许昌建安大道证券营业部</option>
+                                    <option value="5111" >雅安朝阳街营业部</option>
+                                    <option value="8309" >烟台南大街证券营业部</option>
+                                    <option value="8004" >延吉长白山路证券营业部</option>
+                                    <option value="8348" >盐城解放南路证券营业部</option>
+                                    <option value="8335" >扬州扬子江中路证券营业部</option>
+                                    <option value="8323" >宜宾金沙江大道证券营业部</option>
+                                    <option value="8026" >宜春高安瑞州路证券营业部</option>
+                                    <option value="3607" >宜春中山中路证券营业部</option>
+                                    <option value="3312" >义乌稠州北路证券营业部</option>
+                                    <option value="8397" >益阳益阳大道证券营业部</option>
+                                    <option value="6401" >银川解放西街证券营业部</option>
+                                    <option value="3604" >鹰潭环城西路证券营业部</option>
+                                    <option value="8062" >荥阳国泰路证券营业部</option>
+                                    <option value="8370" >永州梅湾路证券营业部</option>
+                                    <option value="8054" >余姚舜水南路证券营业部</option>
+                                    <option value="8380" >玉林广场东路证券营业部</option>
+                                    <option value="8379" >岳阳南湖大道证券营业部</option>
+                                    <option value="5388" >云南分公司本部</option>
+                                    <option value="5301" >云南昆明人民中路证券营业部</option>
+                                    <option value="8512" >云南玉溪玉兴路证券营业部</option>
+                                    <option value="8501" >枣庄光明西路证券营业部</option>
+                                    <option value="8333" >湛江人民大道证券营业部</option>
+                                    <option value="8383" >张家界子午路证券营业部</option>
+                                    <option value="8362" >张家口钻石中路证券营业部</option>
+                                    <option value="3505" >漳州水仙大街证券营业部</option>
+                                    <option value="8375" >肇庆星湖东路证券营业部</option>
+                                    <option value="3309" >浙江嘉兴中山西路证券营业部</option>
+                                    <option value="3305" >浙江临海巾山中路证券营业部</option>
+                                    <option value="3304" >浙江衢州柯城证券营业部</option>
+                                    <option value="3306" >浙江绍兴中兴中路证券营业部</option>
+                                    <option value="8350" >镇江长江路证券营业部</option>
+                                    <option value="4101" >郑州黄河路证券营业部</option>
+                                    <option value="4188" >郑州金水东路证券营业部（原河南分公司本部）</option>
+                                    <option value="4421" >中山中山三路证券营业部</option>
+                                    <option value="8009" >株洲长江南路证券营业部</option>
+                                    <option value="4304" >株洲建设中路证券营业部</option>
+                                    <option value="8372" >珠海景山路证券营业部</option>
+                                    <option value="8326" >淄博柳泉路证券营业部</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="nbg">
+                        <th style="vertical-align:top">投诉内容：</th>
+                        <td>
+                            <textarea id="content" name="content" class="textarea" style="OVERFLOW-X:HIDDEN; OVERFLOW: SCROLL;scrollbar-face-color: #9EBFE8; scrollbar-shadow-color: #FFFFFF; scrollbar-3dlight-color: #9EBFE8; scrollbar-darkshadow-color: #9EBFE8; scrollbar-arrow-color: #FEA6C0"></textarea>
+                        </td>
+                    </tr>
+                    <tr class="nbg">
+                        <th>&nbsp;</th>
+                        <td>
+                            <p id="butSubmit" style="padding-left:130px;">
+                                <a onclick="javascript:submitOrder();" style="cursor:hand;">
+                                    <img src="/complaint/pic/tijiao.jpg"/>
+                                </a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" id="objectType"/>
+                <input type="hidden" id="objectName"/>
+                <input type="hidden" id="objectCode"/>
+            </div>
+            <p class="btm">版权所有&copy;1999-2011国泰君安证券股份有限公司</p>
+        </div>
+    </body>
+</html>
